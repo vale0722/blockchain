@@ -17,12 +17,12 @@ class Blockchain {
 
     merkelTree(transactions) {
         if (transactions.length === 0) return null;
-        if (transactions.length === 1) return crypto.createHash('sha256').update(JSON.stringify(transactions[0])).digest('hex');
-
-        let left = this.merkelTree(transactions.slice(0, transactions.length / 2));
-        let right = this.merkelTree(transactions.slice(transactions.length / 2));
-
-        return crypto.createHash('sha256').update(left + right).digest('hex');
+        return transactions.length === 1
+            ? crypto.createHash('sha256').update(
+                this.merkelTree(transactions.slice(0, transactions.length / 2))
+                + this.merkelTree(transactions.slice(transactions.length / 2))
+            ).digest('hex')
+            : crypto.createHash('sha256').update(JSON.stringify(transactions[0])).digest('hex');
     }
 
     findNonce() {
