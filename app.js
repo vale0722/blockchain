@@ -132,16 +132,16 @@ function addBlock(previousTransactions) {
     let block;
 
     if(blocks.length === 0 && !previousTransactions.length) {
-        console.log('Error: No existen transacciones');
+        console.log('No existen transacciones');
         return;
     }
 
-    block = blocks.length === 0
-        ? new Blockchain(0, [coinbase().all()], crypto.createHash('sha256').update('0').digest('hex'))
-        : new Blockchain(
+    block = new Blockchain(
         blocks.length,
         [coinbase().all()].concat(previousTransactions),
-        blocks[blocks.length - 1].hash
+        blocks.length ? blocks[blocks.length - 1].hash : (
+            new Blockchain(0, [coinbase().all()], crypto.createHash('sha256').update('0').digest('hex'))
+        ).findNonce().hash
     );
 
     let blockDict = block.findNonce();
@@ -150,6 +150,10 @@ function addBlock(previousTransactions) {
     console.log('block nonce: ' + blockDict.block.header.nonce);
     console.log('hash: ' + blockDict.hash );
     console.log('--------------');
+
+    console.table(blockDict.block);
+
+    Object.values(blockDict.block.body.transactions).forEach((transaction) => console.table(transaction))
 
     blocks.push(blockDict);
 }
