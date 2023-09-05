@@ -4,7 +4,7 @@ class Transaction {
         this.issuer = issuer;
         this.receiver = receiver;
         this.amount = amount;
-        this.createdAt = Date.now();
+        this.created_at = Date.now();
     }
 
     getId() {
@@ -24,7 +24,7 @@ class Transaction {
     }
 
     getCreatedAt() {
-        return this.createdAt;
+        return this.created_at;
     }
 
     all() {
@@ -33,7 +33,7 @@ class Transaction {
             issuer: this.getIssuer(),
             receiver: this.getReceiver(),
             amount: this.getAmount(),
-            createdAt: this.getCreatedAt()
+            created_at: this.getCreatedAt()
         };
     }
 }
